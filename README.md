@@ -6,7 +6,7 @@ Lilith SDK contains types & a packager required for working with the Lilith modd
 
 To install you can simply install via NPM
 ```
-npm install lilith-sdk
+npm install lilith-sdk -g
 ```
 
 ### Usage
