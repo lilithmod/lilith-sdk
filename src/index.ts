@@ -141,7 +141,7 @@ function generateModData(config: ModConfig, dir: string) {
         version: config.version,
         description: config.description,
         entry: config.entry,
-        sdkVersion: "1.0.0-alpha.1",
+        sdkVersion: "1.0.1",
         integrity: integrityHashes,
         dependencies: config.dependencies ?? {}
     };
@@ -239,7 +239,7 @@ async function main() {
             fs.mkdirSync(path.join(lilithDir, "mods"), { recursive: true });
         }
 
-        fs.copyFileSync(outputFile, path.join(lilithDir, "mods/mod.lmod"));
+        fs.copyFileSync(outputFile, path.join(lilithDir, `mods/${config.name ?? "mod"}.lmod`));
         console.log(`${chalk.greenBright("Finalizing")} ${chalk.gray("||")} Cleaning up`);
         deleteDir(dirPath);
         console.log(`${chalk.greenBright("Finalizing")} ${chalk.gray("||")} Done.`)

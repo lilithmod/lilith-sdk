@@ -1,6 +1,6 @@
 {
   "name": "lilith-sdk",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.1",
   "description": "SDK for developing Lilith mods",
   "main": "build/index.js",
   "scripts": {
