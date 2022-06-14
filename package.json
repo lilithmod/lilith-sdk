@@ -1,0 +1,33 @@
+{
+  "name": "lilith-sdk",
+  "version": "1.0.0-alpha.1",
+  "description": "SDK for developing Lilith mods",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "watch": "npx tsc -w"
+  },
+  "keywords": [
+    "ts",
+    "lilith",
+    "modding"
+  ],
+  "author": "zani",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/archiver": "^5.3.1",
+    "@types/tmp": "^0.2.3",
+    "@types/websocket": "^1.0.5",
+    "lexure": "^0.17.0",
+    "unborn-mcproto": "^0.13.0",
+    "websocket": "^1.0.34"
+  },
+  "dependencies": {
+    "archiver": "^5.3.1",
+    "chalk": "^4.1.2",
+    "tmp-promise": "^3.0.3"
+  },
+  "bin": {
+    "lilith-sdk": "build/index.js"
+  }
+}
