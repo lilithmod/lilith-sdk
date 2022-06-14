@@ -1,6 +1,6 @@
 {
-  "name": "lilith-sdk",
-  "version": "1.0.1",
+  "name": "@lilithmod/sdk",
+  "version": "1.0.2",
   "description": "SDK for developing Lilith mods",
   "main": "build/index.js",
   "scripts": {
@@ -14,6 +14,14 @@
   ],
   "author": "zani",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lilithmod/sdk/issues"
+  },
+  "homepage": "https://github.com/lilithmod/sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lilithmod/sdk.git"
+  },
   "devDependencies": {
     "@types/archiver": "^5.3.1",
     "@types/tmp": "^0.2.3",
