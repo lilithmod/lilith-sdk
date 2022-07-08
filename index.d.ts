@@ -1,6 +1,6 @@
 import type { ParserOutput } from "lexure";
 import type { NBT } from "prismarine-nbt";
-import type { Client, Position, ServerConnection } from "unborn-mcproto";
+import type { Client, PacketReader, PacketWriter, Position, ServerConnection } from "unborn-mcproto";
 
 export type Event = {
     client: ServerConnection & ServerClient;
@@ -8,6 +8,14 @@ export type Event = {
 
     setCancelled(cancelled: boolean): void;
 };
+
+export type Packet = packets.Packet;
+
+export enum ChatPosition {
+    Chat,
+    System,
+    ActionBar
+}
 
 export type Rotation = {
     pitch: number;
@@ -131,29 +139,50 @@ export type CommandHandler = {
         execute?: (client: ServerConnection & ServerClient, raw: string, parsed: ParserOutput) => void | null;
         completion?: (client: ServerConnection & ServerClient, input: string) => string[];
     }): void;
-    LexureParser: {
+    lexureParser: {
         parseInput(input: string): ParserOutput | null;
     };
 };
 
-export type PacketEvent<T> = {
+export class PacketEvent<T> implements Event {
+    client: ServerConnection & ServerClient;
     packet: T;
-} & Event;
+    cancelled: boolean;
+
+    constructor(client: any, packet: T);
+    setCancelled(cancelled: boolean): void;
+}
 
 export type Proxy = {
     addListener<T extends Event>(
         id: number,
         direction: "toClient" | "toServer",
-        description: string,
-        priority: number,
-        ignoreCancelled: boolean,
-        handler: (event: T) => Promise<void> | void): void;
+        handler: (event: T) => Promise<void> | void,
+        priority?: number,
+        ignoreCancelled?: boolean): void;
     addAsyncListener<T extends Event>(
         id: number,
         direction: "toClient" | "toServer",
-        description: string,
-        priority: number,
-        handler: (event: T) => Promise<void>): void;
+        handler: (event: T) => Promise<void>,
+        priority?: number): void;
+    writePacket<P extends Packet>(
+        client: ServerConnection & ServerClient,
+        id: ids.play.id,
+        direction: "toClient" | "toServer",
+        packet: P
+    ): Promise<void>;
+    chat(client: ServerConnection & ServerClient, input: string | string[] | object, position?: ChatPosition): void;
+    chatJson(client: ServerConnection & ServerClient, json: any, position?: ChatPosition): void;
+    registerPacketSerializer: <P extends Packet>(
+        packetId: number,
+        direction: "toServer" | "toClient" | "shared",
+        serialize: (packet: P) => PacketWriter
+    ) => void;
+    registerPacketDeserializer: (
+        packetId: number,
+        direction: "toServer" | "toClient" | "shared",
+        deserialize: (packet: PacketReader) => unknown
+    ) => void;
 };
 
 export const proxy: Proxy;
@@ -1893,8 +1922,6 @@ export namespace packets {
     }
 
     export function isPacket(packet: any): packet is Packet;
-
-    export function writePacket<P extends Packet>(client: ServerConnection & ServerClient, id: ids.play.id, direction: "toClient" | "toServer", packet: P): Promise<void>;
 
     export type Packet =
         play.client.KeepAlivePacket |
