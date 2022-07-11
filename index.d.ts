@@ -183,6 +183,8 @@ export type Proxy = {
         direction: "toServer" | "toClient" | "shared",
         deserialize: (packet: PacketReader) => unknown
     ) => void;
+    setClientboundPacketDelay(ms: number): void;
+    setServerboundPacketDelay(ms: number): void;
 };
 
 export const proxy: Proxy;
@@ -340,1364 +342,1464 @@ export namespace packets {
         export namespace client {
             export type KeepAlivePacket = {
                 metadata: {
-                    knownName?: "keep_alive";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'keep_alive'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.keep_alive
+                }
                 data: {
-                    keepAliveId: number;
-                };
-            };
+                    keepAliveId: number
+                }
+            }
             export type LoginPacket = {
                 metadata: {
-                    knownName?: "login";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'login'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.login
+                }
                 data: {
-                    entityId: number;
-                    gameMode: number;
-                    dimension: number;
-                    difficulty: number;
-                    maxPlayers: number;
-                    levelType: string;
-                    reducedDebugInfo: boolean;
-                };
-            };
+                    entityId: number
+                    gameMode: number
+                    dimension: number
+                    difficulty: number
+                    maxPlayers: number
+                    levelType: string
+                    reducedDebugInfo: boolean
+                }
+            }
             export type ChatPacket = {
                 metadata: {
-                    knownName?: "chat";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'chat'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.chat
+                }
                 data: {
-                    message: string;
-                    position: number;
-                };
-            };
+                    message: string
+                    position: number
+                }
+            }
             export type UpdateTimePacket = {
                 metadata: {
-                    knownName?: "update_time";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'update_time'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.update_time
+                }
                 data: {
-                    age: number;
-                    time: number;
-                };
-            };
+                    age: number
+                    time: number
+                }
+            }
             export type EntityEquipmentPacket = {
                 metadata: {
-                    knownName?: "entity_equipment";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_equipment'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_equipment
+                }
                 data: {
-                    entityId: number;
-                    slot: number;
-                    item: Slot;
-                };
-            };
+                    entityId: number
+                    slot: number
+                    item: Slot
+                }
+            }
             export type SpawnPositionPacket = {
                 metadata: {
-                    knownName?: "spawn_position";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'spawn_position'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.spawn_position
+                }
                 data: {
-                    location: Position;
-                };
-            };
+                    location: Position
+                }
+            }
             export type UpdateHealthPacket = {
                 metadata: {
-                    knownName?: "update_health";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'update_health'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.update_health
+                }
                 data: {
-                    health: number;
-                    food: number;
-                    foodSaturation: number;
-                };
-            };
+                    health: number
+                    food: number
+                    foodSaturation: number
+                }
+            }
             export type RespawnPacket = {
                 metadata: {
-                    knownName?: "respawn";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'respawn'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.respawn
+                }
                 data: {
-                    dimension: number;
-                    difficulty: number;
-                    gamemode: number;
-                    levelType: string;
-                };
-            };
+                    dimension: number
+                    difficulty: number
+                    gamemode: number
+                    levelType: string
+                }
+            }
             export type PositionPacket = {
                 metadata: {
-                    knownName?: "position";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'position'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.position
+                }
                 data: {
-                    x: number;
-                    y: number;
-                    z: number;
-                    yaw: number;
-                    pitch: number;
-                    flags: number;
-                };
-            };
+                    x: number
+                    y: number
+                    z: number
+                    yaw: number
+                    pitch: number
+                    flags: number
+                }
+            }
             export type HeldItemSlotPacket = {
                 metadata: {
-                    knownName?: "held_item_slot";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'held_item_slot'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.held_item_slot
+                }
                 data: {
-                    slot: number;
-                };
-            };
+                    slot: number
+                }
+            }
             export type BedPacket = {
                 metadata: {
-                    knownName?: "bed";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'bed'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.bed
+                }
                 data: {
-                    entityId: number;
-                    location: Position;
-                };
-            };
+                    entityId: number
+                    location: Position
+                }
+            }
             export type AnimationPacket = {
                 metadata: {
-                    knownName?: "animation";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'animation'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.animation
+                }
                 data: {
-                    entityId: number;
-                    animation: number;
-                };
-            };
+                    entityId: number
+                    animation: number
+                }
+            }
             export type NamedEntitySpawnPacket = {
                 metadata: {
-                    knownName?: "named_entity_spawn";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'named_entity_spawn'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.named_entity_spawn
+                }
                 data: {
-                    entityId: number;
-                    playerUUID: UUID;
-                    x: number;
-                    y: number;
-                    z: number;
-                    yaw: number;
-                    pitch: number;
-                    currentItem: number;
-                    metadata: EntityMetadata;
-                };
-            };
+                    entityId: number
+                    playerUUID: UUID
+                    x: number
+                    y: number
+                    z: number
+                    yaw: number
+                    pitch: number
+                    currentItem: number
+                    metadata: EntityMetadata
+                }
+            }
             export type CollectPacket = {
                 metadata: {
-                    knownName?: "collect";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'collect'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.collect
+                }
                 data: {
-                    collectedEntityId: number;
-                    collectorEntityId: number;
-                };
-            };
+                    collectedEntityId: number
+                    collectorEntityId: number
+                }
+            }
             export type SpawnEntityPacket = {
                 metadata: {
-                    knownName?: "spawn_entity";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'spawn_entity'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.spawn_entity
+                }
                 data: {
-                    entityId: number;
-                    x: number;
-                    y: number;
-                    z: number;
-                    yaw: number;
-                    pitch: number;
+                    entityId: number
+                    x: number
+                    y: number
+                    z: number
+                    yaw: number
+                    pitch: number
                     objectData: {
-                        intField: number;
-                        velocityX?: number;
-                        velocityY?: number;
-                        velocityZ?: number;
-                    };
-                };
-            };
+                        intField: number
+                        velocityX?: number
+                        velocityY?: number
+                        velocityZ?: number
+                    }
+                }
+            }
             export type SpawnEntityLivingPacket = {
                 metadata: {
-                    knownName?: "spawn_entity_living";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'spawn_entity_living'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.spawn_entity_living
+                }
                 data: {
-                    entityId: number;
-                    x: number;
-                    y: number;
-                    z: number;
-                    yaw: number;
-                    pitch: number;
-                    headPitch: number;
-                    velocityX: number;
-                    velocityY: number;
-                    velocityZ: number;
-                    metadata: EntityMetadata;
-                };
-            };
+                    entityId: number
+                    x: number
+                    y: number
+                    z: number
+                    yaw: number
+                    pitch: number
+                    headPitch: number
+                    velocityX: number
+                    velocityY: number
+                    velocityZ: number
+                    metadata: EntityMetadata
+                }
+            }
             export type SpawnEntityPaintingPacket = {
                 metadata: {
-                    knownName?: "spawn_entity_painting";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'spawn_entity_painting'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.spawn_entity_painting
+                }
                 data: {
-                    entityId: number;
-                    title: string;
-                    location: Position;
-                    direction: number;
-                };
-            };
+                    entityId: number
+                    title: string
+                    location: Position
+                    direction: number
+                }
+            }
             export type SpawnEntityExperienceOrbPacket = {
                 metadata: {
-                    knownName?: "spawn_entity_experience_orb";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'spawn_entity_experience_orb'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.spawn_entity_experience_orb
+                }
                 data: {
-                    entityId: number;
-                    x: number;
-                    y: number;
-                    z: number;
-                    count: number;
-                };
-            };
+                    entityId: number
+                    x: number
+                    y: number
+                    z: number
+                    count: number
+                }
+            }
             export type EntityVelocityPacket = {
                 metadata: {
-                    knownName?: "entity_velocity";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_velocity'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_velocity
+                }
                 data: {
-                    entityId: number;
-                    velocityX: number;
-                    velocityY: number;
-                    velocityZ: number;
-                };
-            };
+                    entityId: number
+                    velocityX: number
+                    velocityY: number
+                    velocityZ: number
+                }
+            }
             export type EntityDestroyPacket = {
                 metadata: {
-                    knownName?: "entity_destroy";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_destroy'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_destroy
+                }
                 data: {
-                    entityIds: Array<number>;
-                };
-            };
+                    entityIds: Array<number>
+                }
+            }
             export type EntityPacket = {
                 metadata: {
-                    knownName?: "entity";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity
+                }
                 data: {
-                    entityId: number;
-                };
-            };
+                    entityId: number
+                }
+            }
             export type RelEntityMovePacket = {
                 metadata: {
-                    knownName?: "rel_entity_move";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'rel_entity_move'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.rel_entity_move
+                }
                 data: {
-                    entityId: number;
-                    dX: number;
-                    dY: number;
-                    dZ: number;
-                    onGround: boolean;
-                };
-            };
+                    entityId: number
+                    dX: number
+                    dY: number
+                    dZ: number
+                    onGround: boolean
+                }
+            }
             export type EntityLookPacket = {
                 metadata: {
-                    knownName?: "entity_look";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_look'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_look
+                }
                 data: {
-                    entityId: number;
-                    yaw: number;
-                    pitch: number;
-                    onGround: boolean;
-                };
-            };
+                    entityId: number
+                    yaw: number
+                    pitch: number
+                    onGround: boolean
+                }
+            }
             export type EntityMoveLookPacket = {
                 metadata: {
-                    knownName?: "entity_move_look";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_move_look'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_move_look
+                }
                 data: {
-                    entityId: number;
-                    dX: number;
-                    dY: number;
-                    dZ: number;
-                    yaw: number;
-                    pitch: number;
-                    onGround: boolean;
-                };
-            };
+                    entityId: number
+                    dX: number
+                    dY: number
+                    dZ: number
+                    yaw: number
+                    pitch: number
+                    onGround: boolean
+                }
+            }
             export type EntityTeleportPacket = {
                 metadata: {
-                    knownName?: "entity_teleport";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_teleport'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_teleport
+                }
                 data: {
-                    entityId: number;
-                    x: number;
-                    y: number;
-                    z: number;
-                    yaw: number;
-                    pitch: number;
-                    onGround: boolean;
-                };
-            };
+                    entityId: number
+                    x: number
+                    y: number
+                    z: number
+                    yaw: number
+                    pitch: number
+                    onGround: boolean
+                }
+            }
             export type EntityHeadRotationPacket = {
                 metadata: {
-                    knownName?: "entity_head_rotation";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_head_rotation'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_head_rotation
+                }
                 data: {
-                    entityId: number;
-                    headYaw: number;
-                };
-            };
+                    entityId: number
+                    headYaw: number
+                }
+            }
             export type EntityStatusPacket = {
                 metadata: {
-                    knownName?: "entity_status";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_status'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_status
+                }
                 data: {
-                    entityId: number;
-                    entityStatus: number;
-                };
-            };
+                    entityId: number
+                    entityStatus: number
+                }
+            }
             export type AttachEntityPacket = {
                 metadata: {
-                    knownName?: "attach_entity";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'attach_entity'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.attach_entity
+                }
                 data: {
-                    entityId: number;
-                    vehicleId: number;
-                    leash: boolean;
-                };
-            };
+                    entityId: number
+                    vehicleId: number
+                    leash: boolean
+                }
+            }
             export type EntityMetadataPacket = {
                 metadata: {
-                    knownName?: "entity_metadata";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_metadata'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_metadata
+                }
                 data: {
-                    entityId: number;
-                    metadata: EntityMetadata;
-                };
-            };
+                    entityId: number
+                    metadata: EntityMetadata
+                }
+            }
             export type EntityEffectPacket = {
                 metadata: {
-                    knownName?: "entity_effect";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_effect'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.entity_effect
+                }
                 data: {
-                    entityId: number;
-                    effectId: number;
-                    amplifier: number;
-                    duration: number;
-                    hideParticles: boolean;
-                };
-            };
+                    entityId: number
+                    effectId: number
+                    amplifier: number
+                    duration: number
+                    hideParticles: boolean
+                }
+            }
             export type RemoveEntityEffectPacket = {
                 metadata: {
-                    knownName?: "remove_entity_effect";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'remove_entity_effect'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.remove_entity_effect
+                }
                 data: {
-                    entityId: number;
-                    effectId: number;
-                };
-            };
+                    entityId: number
+                    effectId: number
+                }
+            }
             export type ExperiencePacket = {
                 metadata: {
-                    knownName?: "experience";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'experience'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.experience
+                }
                 data: {
-                    experienceBar: number;
-                    level: number;
-                    totalExperience: number;
-                };
-            };
+                    experienceBar: number
+                    level: number
+                    totalExperience: number
+                }
+            }
             export type UpdateAttributesPacket = {
                 metadata: {
-                    knownName?: "update_attributes";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'update_attributes'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.update_attributes
+                }
                 data: {
-                    entityId: number;
+                    entityId: number
                     properties: Array<{
-                        countType: number;
+                        countType: number
                         content: {
-                            key: string;
-                            value: number;
+                            key: string
+                            value: number
                             modifiers: Array<{
                                 UUID: string,
-                                amount: number;
-                                operation: number;
-                            }>;
-                        };
-                    }>;
-                };
-            };
+                                amount: number
+                                operation: number
+                            }>
+                        }
+                    }>
+                }
+            }
             export type MapChunkPacket = {
                 metadata: {
-                    knownName?: "map_chunk";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'map_chunk'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.map_chunk
+                }
                 data: {
-                    x: number;
-                    z: number;
-                    groundUp: boolean;
-                    bitMap: number;
-                    chunkData: Buffer;
-                };
-            };
+                    x: number
+                    z: number
+                    groundUp: boolean
+                    bitMap: number
+                    chunkData: Buffer
+                }
+            }
             export type MultiBlockChangePacket = {
                 metadata: {
-                    knownName?: "multi_block_change";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'multi_block_change'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.multi_block_change
+                }
                 data: {
-                    chunkX: number;
-                    chunkZ: number;
+                    chunkX: number
+                    chunkZ: number
                     records: Array<{
-                        horizontalPos: number;
-                        y: number;
-                        blockId: number;
-                    }>;
-                };
-            };
+                        horizontalPos: number
+                        y: number
+                        blockId: number
+                    }>
+                }
+            }
             export type BlockChangePacket = {
                 metadata: {
-                    knownName?: "block_change";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'block_change'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.block_change
+                }
                 data: {
-                    location: Position;
-                    type: number;
-                };
-            };
+                    location: Position
+                    type: number
+                }
+            }
             export type BlockActionPacket = {
                 metadata: {
-                    knownName?: "block_action";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'block_action'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.block_action
+                }
                 data: {
-                    location: Position;
-                    byte1: number;
-                    byte2: number;
-                    blockId: number;
-                };
-            };
+                    location: Position
+                    byte1: number
+                    byte2: number
+                    blockId: number
+                }
+            }
             export type BlockBreakAnimationPacket = {
                 metadata: {
-                    knownName?: "block_break_animation";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'block_break_animation'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.block_break_animation
+                }
                 data: {
-                    entityId: number;
-                    location: Position;
-                    destroyStage: number;
-                };
-            };
+                    entityId: number
+                    location: Position
+                    destroyStage: number
+                }
+            }
             export type MapChunkBulkPacket = {
                 metadata: {
-                    knownName?: "map_chunk_bulk";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'map_chunk_bulk'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.map_chunk_bulk
+                }
                 data: {
-                    skyLightSend: boolean;
+                    skyLightSend: boolean
                     meta: Array<{
-                        x: number;
-                        z: number;
-                        bitMap: number;
-                    }>;
-                    data: Buffer;
-                };
-            };
+                        x: number
+                        z: number
+                        bitMap: number
+                    }>
+                    data: Buffer
+                }
+            }
             export type ExplosionPacket = {
                 metadata: {
-                    knownName?: "explosion";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'explosion'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.explosion
+                }
                 data: {
-                    x: number;
-                    y: number;
-                    z: number;
-                    radius: number;
-                    affectedBlockOffsets: Array<Position>;
-                    playerMotionX: number;
-                    playerMotionY: number;
-                    playerMotionZ: number;
-                };
-            };
+                    x: number
+                    y: number
+                    z: number
+                    radius: number
+                    affectedBlockOffsets: Array<Position>
+                    playerMotionX: number
+                    playerMotionY: number
+                    playerMotionZ: number
+                }
+            }
             export type WorldEventPacket = {
                 metadata: {
-                    knownName?: "world_event";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'world_event'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.world_event
+                }
                 data: {
-                    effectId: number;
-                    location: Position;
-                    data: number;
-                    global: boolean;
-                };
-            };
+                    effectId: number
+                    location: Position
+                    data: number
+                    global: boolean
+                }
+            }
             export type NamedSoundEffectPacket = {
                 metadata: {
-                    knownName?: "named_sound_effect";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'named_sound_effect'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.named_sound_effect
+                }
                 data: {
-                    soundName: string;
-                    x: number;
-                    y: number;
-                    z: number;
-                    volume: number;
-                    pitch: number;
-                };
-            };
+                    soundName: string
+                    x: number
+                    y: number
+                    z: number
+                    volume: number
+                    pitch: number
+                }
+            }
             export type WorldParticlesPacket = {
                 metadata: {
-                    knownName?: "world_particles";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'world_particles'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.world_particles
+                }
                 data: {
-                    particleId: number;
-                    longDistance: boolean;
-                    x: number;
-                    y: number;
-                    z: number;
-                    offsetX: number;
-                    offsetY: number;
-                    offsetZ: number;
-                    particleData: number;
-                    particles: number;
-                    data: Array<number>;
-                };
-            };
+                    particleId: number
+                    longDistance: boolean
+                    x: number
+                    y: number
+                    z: number
+                    offsetX: number
+                    offsetY: number
+                    offsetZ: number
+                    particleData: number
+                    particles: number
+                    data: Array<number>
+                }
+            }
             export type GameStateChangePacket = {
                 metadata: {
-                    knownName?: "game_state_change";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'game_state_change'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.game_state_change
+                }
                 data: {
-                    reason: number;
-                    gameMode: number;
-                };
-            };
+                    reason: number
+                    gameMode: number
+                }
+            }
             export type SpawnEntityWeatherPacket = {
                 metadata: {
-                    knownName?: "spawn_entity_weather";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'spawn_entity_weather'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.spawn_entity_weather
+                }
                 data: {
-                    entityId: number;
-                    type: number;
-                    x: number;
-                    y: number;
-                    z: number;
-                };
-            };
+                    entityId: number
+                    type: number
+                    x: number
+                    y: number
+                    z: number
+                }
+            }
             export type OpenWindowPacket = {
                 metadata: {
-                    knownName?: "open_window";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'open_window'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.open_window
+                }
                 data: {
-                    windowId: number;
-                    inventoryType: string;
-                    windowTitle: number;
-                    slotCount: number;
-                    entityId: any; // TODO: Figure out
-                };
-            };
+                    windowId: number
+                    inventoryType: string
+                    windowTitle: number
+                    slotCount: number
+                    entityId: any // TODO: Figure out
+                }
+            }
             export type CloseWindowPacket = {
                 metadata: {
-                    knownName?: "close_window";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'close_window'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.close_window
+                }
                 data: {
-                    windowId: number;
-                };
-            };
+                    windowId: number
+                }
+            }
             export type SetSlotPacket = {
                 metadata: {
-                    knownName?: "set_slot";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'set_slot'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.set_slot
+                }
                 data: {
-                    windowId: number;
-                    slot: number;
-                    item: Slot;
-                };
-            };
+                    windowId: number
+                    slot: number
+                    item: Slot
+                }
+            }
             export type WindowItemsPacket = {
                 metadata: {
-                    knownName?: "window_items";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'window_items'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.window_items
+                }
                 data: {
-                    windowId: number;
-                    items: Array<Slot>;
-                };
-            };
+                    windowId: number
+                    items: Array<Slot>
+                }
+            }
             export type CraftProgressBarPacket = {
                 metadata: {
-                    knownName?: "craft_progress_bar";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'craft_progress_bar'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.craft_progress_bar
+                }
                 data: {
-                    windowId: number;
-                    property: number;
-                    value: boolean;
-                };
-            };
+                    windowId: number
+                    property: number
+                    value: boolean
+                }
+            }
             export type TransactionPacket = {
                 metadata: {
-                    knownName?: "transaction";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'transaction'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.transaction
+                }
                 data: {
-                    windowId: number;
-                    action: number;
-                    accepted: boolean;
-                };
-            };
+                    windowId: number
+                    action: number
+                    accepted: boolean
+                }
+            }
             export type UpdateSignPacket = {
                 metadata: {
-                    knownName?: "update_sign";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'update_sign'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.update_sign
+                }
                 data: {
-                    location: Position;
-                    text1: string;
-                    text2: string;
-                    text3: string;
-                    text4: string;
-                };
-            };
+                    location: Position
+                    text1: string
+                    text2: string
+                    text3: string
+                    text4: string
+                }
+            }
             export type MapPacket = {
                 metadata: {
-                    knownName?: "map";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'map'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.map
+                }
                 data: {
-                    itemDamage: number;
-                    scale: number;
+                    itemDamage: number
+                    scale: number
                     icons: Array<{
-                        countType: number;
+                        countType: number
                         content: {
-                            directionAndType: number;
-                            x: number;
-                            y: number;
-                        };
-                    }>;
-                    columns: number;
-                    rows?: number;
-                    x?: number;
-                    y?: number;
-                    data?: Buffer;
-                };
-            };
+                            directionAndType: number
+                            x: number
+                            y: number
+                        }
+                    }>
+                    columns: number
+                    rows?: number
+                    x?: number
+                    y?: number
+                    data?: Buffer
+                }
+            }
             export type TileEntityDataPacket = {
                 metadata: {
-                    knownName?: "tile_entity_data";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'tile_entity_data'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.tile_entity_data
+                }
                 data: {
-                    location: Position;
-                    action: number;
-                    nbtData?: NBT;
-                };
-            };
+                    location: Position
+                    action: number
+                    nbtData?: NBT
+                }
+            }
             export type OpenSignEntityPacket = {
                 metadata: {
-                    knownName?: "open_sign_entity";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'open_sign_entity'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.open_sign_entity
+                }
                 data: {
-                    location: Position;
-                };
-            };
+                    location: Position
+                }
+            }
             export type StatisticsPacket = {
                 metadata: {
-                    knownName?: "statistics";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'statistics'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.statistics
+                }
                 data: {
                     entries: Array<{
-                        name: string;
-                        value: number;
-                    }>;
-                };
-            };
+                        name: string
+                        value: number
+                    }>
+                }
+            }
             export type PlayerInfoPacket = {
                 metadata: {
-                    knownName?: "player_info";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'player_info'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.player_info
+                }
                 data: {
-                    action: PlayerInfoAction.AddPlayer;
+                    action: PlayerInfoAction.AddPlayer
                     data: Array<{
-                        UUID: UUID;
-                        name: string;
+                        UUID: UUID
+                        name: string
                         properties: Array<{
-                            name: string;
-                            value: string;
-                            signature?: string;
-                        }>;
-                        gamemode: number;
-                        ping: number;
-                        displayName?: string;
-                    }>;
+                            name: string
+                            value: string
+                            signature?: string
+                        }>
+                        gamemode: number
+                        ping: number
+                        displayName?: string
+                    }>
                 } | {
-                    action: PlayerInfoAction.UpdateGamemode;
+                    action: PlayerInfoAction.UpdateGamemode
                     data: Array<{
-                        UUID: UUID;
-                        gamemode: number;
-                    }>;
+                        UUID: UUID
+                        gamemode: number
+                    }>
                 } | {
-                    action: PlayerInfoAction.UpdatePing;
+                    action: PlayerInfoAction.UpdatePing
                     data: Array<{
-                        UUID: UUID;
-                        ping: number;
-                    }>;
+                        UUID: UUID
+                        ping: number
+                    }>
                 } | {
-                    action: PlayerInfoAction.UpdateDisplayName;
+                    action: PlayerInfoAction.UpdateDisplayName
                     data: Array<{
-                        UUID: UUID;
-                        displayName?: string;
-                    }>;
+                        UUID: UUID
+                        displayName?: string
+                    }>
                 } | {
-                    action: PlayerInfoAction.RemovePlayer;
+                    action: PlayerInfoAction.RemovePlayer
                     data: Array<{
-                        UUID: UUID;
-                    }>;
-                };
-            };
+                        UUID: UUID
+                    }>
+                }
+            }
             export type AbilitiesPacket = {
                 metadata: {
-                    knownName?: "abilities";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'abilities'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.abilities
+                }
                 data: {
-                    flags: number;
-                    flyingSpeed: number;
-                    walkingSpeed: number;
-                };
-            };
+                    flags: number
+                    flyingSpeed: number
+                    walkingSpeed: number
+                }
+            }
             export type TabCompletePacket = {
                 metadata: {
-                    knownName?: "tab_complete";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'tab_complete'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.tab_complete
+                }
                 data: {
-                    matches: Array<string>;
-                };
-            };
-
+                    matches: Array<string>
+                }
+            }
+    
             export type ScoreboardObjectivePacket = {
                 metadata: {
-                    knownName?: "scoreboard_objective";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'scoreboard_objective'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.scoreboard_objective
+                }
                 data: {
-                    name: string;
-                    action: ScoreboardObjectiveAction.Create | ScoreboardObjectiveAction.Update;
-                    displayText: string;
-                    type: string;
+                    name: string
+                    action: ScoreboardObjectiveAction.Create | ScoreboardObjectiveAction.Update
+                    displayText: string
+                    type: string
                 } | {
-                    name: string;
-                    action: ScoreboardObjectiveAction.Remove;
-                };
-            };
+                    name: string
+                    action: ScoreboardObjectiveAction.Remove
+                }
+            }
             export type ScoreboardScorePacket = {
                 metadata: {
-                    knownName?: "scoreboard_score";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'scoreboard_score'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.scoreboard_score
+                }
                 data: {
-                    itemName: string;
-                    action: number;
-                    scoreName: string;
-                    value?: number;
-                };
-            };
+                    itemName: string
+                    action: number
+                    scoreName: string
+                    value?: number
+                }
+            }
             export type ScoreboardDisplayObjectivePacket = {
                 metadata: {
-                    knownName?: "scoreboard_display_objective";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'scoreboard_display_objective'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.scoreboard_display_objective
+                }
                 data: {
-                    position: number;
-                    name: string;
-                };
-            };
+                    position: number
+                    name: string
+                }
+            }
             export type ScoreboardTeamPacket = {
                 metadata: {
-                    knownName?: "scoreboard_team";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'scoreboard_team'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.scoreboard_team
+                }
                 data: {
-                    team: string;
-                    mode: ScoreboardTeamMode.Create;
-                    name: string;
-                    prefix: string;
-                    suffix: string;
-                    friendlyFire: number;
-                    nameTagVisibility: "always" | "hideForOtherTeams" | "hideForOwnTeam" | "never";
-                    color: number;
-                    players: Array<string>;
+                    team: string
+                    mode: ScoreboardTeamMode.Create
+                    name: string
+                    prefix: string
+                    suffix: string
+                    friendlyFire: number
+                    nameTagVisibility: 'always' | 'hideForOtherTeams' | 'hideForOwnTeam' | 'never'
+                    color: number
+                    players: Array<string>
                 } | {
-                    team: string;
-                    mode: ScoreboardTeamMode.Remove;
+                    team: string
+                    mode: ScoreboardTeamMode.Remove
                 } | {
-                    team: string;
-                    mode: ScoreboardTeamMode.UpdateInformation;
-                    name: string;
-                    prefix: string;
-                    suffix: string;
-                    friendlyFire: number;
-                    nameTagVisibility: "always" | "hideForOtherTeams" | "hideForOwnTeam" | "never";
-                    color: number;
+                    team: string
+                    mode: ScoreboardTeamMode.UpdateInformation
+                    name: string
+                    prefix: string
+                    suffix: string
+                    friendlyFire: number
+                    nameTagVisibility: 'always' | 'hideForOtherTeams' | 'hideForOwnTeam' | 'never'
+                    color: number
                 } | {
-                    team: string;
-                    mode: ScoreboardTeamMode.AddPlayers | ScoreboardTeamMode.RemovePlayers;
-                    players: Array<string>;
-                };
-            };
+                    team: string
+                    mode: ScoreboardTeamMode.AddPlayers | ScoreboardTeamMode.RemovePlayers
+                    players: Array<string>
+                }
+            }
             export type CustomPayloadPacket = {
                 metadata: {
-                    knownName?: "custom_payload";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'custom_payload'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.custom_payload
+                }
                 data: {
-                    channel: string;
-                    data: Buffer;
-                };
-            };
+                    channel: string
+                    data: Buffer
+                }
+            }
             export type KickDisconnectPacket = {
                 metadata: {
-                    knownName?: "kick_disconnect";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'kick_disconnect'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.kick_disconnect
+                }
                 data: {
-                    reason: string;
-                };
-            };
+                    reason: string
+                }
+            }
             export type DifficultyPacket = {
                 metadata: {
-                    knownName?: "difficulty";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'difficulty'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.difficulty
+                }
                 data: {
-                    difficulty: Difficulty;
-                };
-            };
+                    difficulty: Difficulty
+                }
+            }
             export type CombatEventPacket = {
                 metadata: {
-                    knownName?: "combat_event";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'combat_event'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.combat_event
+                }
                 data: {
-                    event: CombatEvent.Enter;
+                    event: CombatEvent.Enter
                 } | {
-                    event: CombatEvent.End;
-                    duration: number;
-                    entityId: number;
+                    event: CombatEvent.End
+                    duration: number
+                    entityId: number
                 } | {
-                    event: CombatEvent.Dead;
-                    playerId: number;
-                    entityId: number;
-                    message: string;
-                };
-            };
+                    event: CombatEvent.Dead
+                    playerId: number
+                    entityId: number
+                    message: string
+                }
+            }
             export type CameraPacket = {
                 metadata: {
-                    knownName?: "camera";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'camera'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.camera
+                }
                 data: {
-                    cameraId: number;
-                };
-            };
+                    cameraId: number
+                }
+            }
             export type WorldBorderPacket = {
                 metadata: {
-                    knownName?: "world_border";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'world_border'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.world_border
+                }
                 data: {
-                    action: WorldBorderAction.SetSize;
-                    radius: number;
+                    action: WorldBorderAction.SetSize
+                    radius: number
                 } | {
-                    action: WorldBorderAction.LerpSize;
-                    old_radius: number;
-                    new_radius: number;
-                    speed: number;
+                    action: WorldBorderAction.LerpSize
+                    old_radius: number
+                    new_radius: number
+                    speed: number
                 } | {
-                    action: WorldBorderAction.SetCenter;
-                    x: number;
-                    z: number;
+                    action: WorldBorderAction.SetCenter
+                    x: number
+                    z: number
                 } | {
-                    action: WorldBorderAction.Initialize;
-                    x: number;
-                    z: number;
-                    old_radius: number;
-                    new_radius: number;
-                    speed: number;
-                    portalBoundary: number;
-                    warning_time: number;
-                    warning_blocks: number;
+                    action: WorldBorderAction.Initialize
+                    x: number
+                    z: number
+                    old_radius: number
+                    new_radius: number
+                    speed: number
+                    portalBoundary: number
+                    warning_time: number
+                    warning_blocks: number
                 } | {
-                    action: WorldBorderAction.SetWarningTime;
-                    warning_time: number;
+                    action: WorldBorderAction.SetWarningTime
+                    warning_time: number
                 } | {
-                    action: WorldBorderAction.SetWarningBlocks;
-                    warning_blocks: number;
-                };
-            };
+                    action: WorldBorderAction.SetWarningBlocks
+                    warning_blocks: number
+                }
+            }
             export type TitlePacket = {
                 metadata: {
-                    knownName?: "title";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'title'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.title
+                }
                 data: {
-                    action: TitleAction.SetTitle | TitleAction.SetSubtitle;
-                    text: string;
+                    action: TitleAction.SetTitle | TitleAction.SetSubtitle
+                    text: string
                 } | {
-                    action: TitleAction.SetTimesAndDisplay;
-                    fadeIn: number;
-                    stay: number;
-                    fadeOut: number;
+                    action: TitleAction.SetTimesAndDisplay
+                    fadeIn: number
+                    stay: number
+                    fadeOut: number
                 } | {
-                    action: TitleAction.Hide | TitleAction.Reset;
-                };
-            };
+                    action: TitleAction.Hide | TitleAction.Reset
+                }
+            }
             /**
-             * @deprecated Use login.client.CompressPacket instead
+             * @deprecated Use Login.toClient.CompressPacket instead
              */
             export type SetCompressionPacket = {
                 metadata: {
-                    knownName?: "set_compression";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'set_compression'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.set_compression
+                }
                 data: {
-                    time: number;
-                };
-            };
+                    time: number
+                }
+            }
             export type PlayerlistHeaderPacket = {
                 metadata: {
-                    knownName?: "playerlist_header";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'playerlist_header'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.playerlist_header
+                }
                 data: {
-                    header: string;
-                    footer: string;
-                };
-            };
+                    header: string
+                    footer: string
+                }
+            }
             export type ResourcePackSendPacket = {
                 metadata: {
-                    knownName?: "resource_pack_send";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'resource_pack_send'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.resource_pack_send
+                }
                 data: {
-                    url: string;
-                    hash: string;
-                };
-            };
+                    url: string
+                    hash: string
+                }
+            }
             export type UpdateEntityNBTPacket = {
                 metadata: {
-                    knownName?: "update_entity_nbt";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'update_entity_nbt'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.client.update_entity_nbt
+                }
                 data: {
-                    entityId: number;
-                    tag: NBT;
-                };
-            };
+                    entityId: number
+                    tag: NBT
+                }
+            }
         }
         export namespace server {
             export type KeepAlivePacket = {
                 metadata: {
-                    knownName?: "keep_alive";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'keep_alive'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.keep_alive
+                }
                 data: {
-                    keepAliveId: number;
-                };
-            };
+                    keepAliveId: number
+                }
+            }
             export type ChatPacket = {
                 metadata: {
-                    knownName?: "chat";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'chat'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.chat
+                }
                 data: {
-                    message: string;
-                };
-            };
+                    message: string
+                }
+            }
             export type UseEntityPacket = {
                 metadata: {
-                    knownName?: "use_entity";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'use_entity'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.use_entity
+                }
                 data: {
-                    target: number;
-                    mouse: number;
-                    x?: number;
-                    y?: number;
-                    z?: number; // TODO: do more nicely
-                };
-            };
+                    target: number
+                    mouse: number
+                    x?: number
+                    y?: number
+                    z?: number // TODO: do more nicely
+                }
+            }
             export type FlyingPacket = {
                 metadata: {
-                    knownName?: "flying";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'flying'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.flying
+                }
                 data: {
-                    onGround: boolean;
-                };
-            };
+                    onGround: boolean
+                }
+            }
             export type PositionPacket = {
                 metadata: {
-                    knownName?: "position";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'position'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.position
+                }
                 data: {
-                    x: number;
-                    y: number;
-                    z: number;
-                    onGround: boolean;
-                };
-            };
+                    x: number
+                    y: number
+                    z: number
+                    onGround: boolean
+                }
+            }
             export type LookPacket = {
                 metadata: {
-                    knownName?: "look";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'look'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.look
+                }
                 data: {
-                    yaw: number;
-                    pitch: number;
-                    onGround: boolean;
-                };
-            };
+                    yaw: number
+                    pitch: number
+                    onGround: boolean
+                }
+            }
             export type PositionLookPacket = {
                 metadata: {
-                    knownName?: "position_look";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'position_look'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.position_look
+                }
                 data: {
-                    x: number;
-                    y: number;
-                    z: number;
-                    yaw: number;
-                    pitch: number;
-                    onGround: boolean;
-                };
-            };
+                    x: number
+                    y: number
+                    z: number
+                    yaw: number
+                    pitch: number
+                    onGround: boolean
+                }
+            }
             export type BlockDigPacket = {
                 metadata: {
-                    knownName?: "block_dig";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'block_dig'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.block_dig
+                }
                 data: {
-                    status: number;
-                    location: Position;
-                    face: number;
-                };
-            };
+                    status: number
+                    location: Position
+                    face: number
+                }
+            }
             export type BlockPlacePacket = {
                 metadata: {
-                    knownName?: "block_place";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'block_place'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.block_place
+                }
                 data: {
-                    location: Position;
-                    direction: number;
-                    heldItem: Slot;
-                    cursorX: number;
-                    cursorY: number;
-                    cursorZ: number;
-                };
-            };
+                    location: Position
+                    direction: number
+                    heldItem: Slot
+                    cursorX: number
+                    cursorY: number
+                    cursorZ: number
+                }
+            }
             export type HeldItemSlotPacket = {
                 metadata: {
-                    knownName?: "held_item_slot";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'held_item_slot'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.held_item_slot
+                }
                 data: {
-                    slotId: number;
-                };
-            };
+                    slotId: number
+                }
+            }
             export type ArmAnimationPacket = {
                 metadata: {
-                    knownName?: "arm_animation";
-                    name: string;
-                    state: "play";
-                };
-                data: {};
-            };
+                    knownName?: 'arm_animation'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.arm_animation
+                }
+                data: {}
+            }
             export type EntityActionPacket = {
                 metadata: {
-                    knownName?: "entity_action";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'entity_action'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.entity_action
+                }
                 data: {
-                    entityId: number;
-                    actionId: number;
-                    jumpBoost: number;
-                };
-            };
+                    entityId: number
+                    actionId: number
+                    jumpBoost: number
+                }
+            }
             export type SteerVehiclePacket = {
                 metadata: {
-                    knownName?: "steer_vehicle";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'steer_vehicle'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.steer_vehicle
+                }
                 data: {
-                    sideways: number;
-                    forward: number;
-                    jump: number;
-                };
-            };
+                    sideways: number
+                    forward: number
+                    jump: number
+                }
+            }
             export type CloseWindowPacket = {
                 metadata: {
-                    knownName?: "close_window";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'close_window'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.close_window
+                }
                 data: {
-                    windowId: number;
-                };
-            };
+                    windowId: number
+                }
+            }
             export type WindowClickPacket = {
                 metadata: {
-                    knownName?: "window_click";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'window_click'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.window_click
+                }
                 data: {
-                    windowId: number;
-                    slot: number;
-                    mouseButton: number;
-                    action: number;
-                    mode: number;
-                    item: Slot;
-                };
-            };
+                    windowId: number
+                    slot: number
+                    mouseButton: number
+                    action: number
+                    mode: number
+                    item: Slot
+                }
+            }
             export type TransactionPacket = {
                 metadata: {
-                    knownName?: "transaction";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'transaction'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.transaction
+                }
                 data: {
-                    windowId: number;
-                    action: number;
-                    accepted: boolean;
-                };
-            };
+                    windowId: number
+                    action: number
+                    accepted: boolean
+                }
+            }
             export type SetCreativeSlotPacket = {
                 metadata: {
-                    knownName?: "set_creative_slot";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'set_creative_slot'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.set_creative_slot
+                }
                 data: {
-                    slot: number;
-                    item: Slot;
-                };
-            };
+                    slot: number
+                    item: Slot
+                }
+            }
             export type EnchantItemPacket = {
                 metadata: {
-                    knownName?: "enchant_item";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'enchant_item'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.enchant_item
+                }
                 data: {
-                    windowId: number;
-                    enchantment: number;
-                };
-            };
+                    windowId: number
+                    enchantment: number
+                }
+            }
             export type UpdateSignPacket = {
                 metadata: {
-                    knownName?: "update_sign";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'update_sign'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.update_sign
+                }
                 data: {
-                    location: Position;
-                    text1: string;
-                    text2: string;
-                    text3: string;
-                    text4: string;
-                };
-            };
+                    location: Position
+                    text1: string
+                    text2: string
+                    text3: string
+                    text4: string
+                }
+            }
             export type AbilitiesPacket = {
                 metadata: {
-                    knownName?: "abilities";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'abilities'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.abilities
+                }
                 data: {
-                    flags: number;
-                    flyingSpeed: number;
-                    walkingSpeed: number;
-                };
-            };
+                    flags: number
+                    flyingSpeed: number
+                    walkingSpeed: number
+                }
+            }
             export type TabCompletePacket = {
                 metadata: {
-                    knownName?: "tab_complete";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'tab_complete'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.tab_complete
+                }
                 data: {
-                    text: string;
-                    block?: Position;
-                };
-            };
+                    text: string
+                    block?: Position
+                }
+            }
             export type SettingsPacket = {
                 metadata: {
-                    knownName?: "settings";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'settings'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.settings
+                }
                 data: {
-                    locale: string;
-                    viewDistance: number;
-                    chatFlags: number;
-                    chatColors: boolean;
-                    skinParts: number;
-                };
-            };
+                    locale: string
+                    viewDistance: number
+                    chatFlags: number
+                    chatColors: boolean
+                    skinParts: number
+                }
+            }
             export type ClientCommandPacket = {
                 metadata: {
-                    knownName?: "client_command";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'client_command'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.client_command
+                }
                 data: {
-                    payload: number;
-                };
-            };
+                    payload: number
+                }
+            }
             export type CustomPayloadPacket = {
                 metadata: {
-                    knownName?: "custom_payload";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'custom_payload'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.custom_payload
+                }
                 data: {
-                    channel: string;
-                    data: Buffer;
-                };
-            };
+                    channel: string
+                    data: Buffer
+                }
+            }
             export type SpectatePacket = {
                 metadata: {
-                    knownName?: "spectate_packet";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'spectate_packet'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.spectate
+                }
                 data: {
-                    target: UUID;
-                };
-            };
+                    target: UUID
+                }
+            }
             export type ResourcePackReceivePacket = {
                 metadata: {
-                    knownName?: "resource_pack_receive";
-                    name: string;
-                    state: "play";
-                };
+                    knownName?: 'resource_pack_receive'
+                    name: string
+                    state: 'play'
+                    id: typeof ids.play.server.resource_pack_receive
+                }
                 data: {
-                    hash: string;
-                    result: number;
-                };
-            };
+                    hash: string
+                    result: number
+                }
+            }
         }
     }
 
